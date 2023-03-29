@@ -1,0 +1,29 @@
+--Create a Chocolate store database
+
+CREATE TABLE store (id INTEGER PRIMARY KEY, name TEXT, item_type TEXT, quantity INTEGER, location TEXT, price INTEGER);
+
+INSERT INTO store VALUES
+(1, "Dark Chocolate", "Food", 10,"shelf",3.99),
+(2,"White Chocolate","Food", 10, "shelf",3.99),
+(3, "Milk Chocolate","Food",10, "shelf",3.99),
+(4, "Fudge", "Food", 15, "Counter",6.50),
+(5, "Peppermint Bark","Food", 5, "Counter",10.75),
+(6, "Hot Chocolate", "Drink", 1, "Counter",6.45),
+(7,"Sipping Cacao","Drink",1,"Counter",6.45),
+(8, "Malt Balls","Food",50,"Shelf",0.50),
+(9, "Chocolate Ice Cream","Food", 15, "Counter",5.50),
+(10, "Waffles", "Food", 10, "Counter",4.99),
+(11, "Cafe au Lait", "Drink",1,"Counter",6.45),
+(12, "Mocha", "Drink", 1, "Counter",6.45),
+(13, "Peppermint Mocha","Drink",1,"Counter",6.45),
+(14, "Chili Chocolate","Food",10,"Shelf",5.99),
+(15, "Mint Chocolate","Food",10, "Shelf",5.99)
+;
+
+--Display the database ordered by price
+SELECT price FROM store ORDER BY price;
+
+-What is the average price of items on the shelf?
+SELECT AVG(price) 
+FROM store
+WHERE location ='shelf';
