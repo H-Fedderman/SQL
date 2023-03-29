@@ -1,4 +1,4 @@
--- ## Loading in the dataset
+-- Loading in the dataset
 
 CREATE TABLE pokemon(
   Number     INTEGER,
@@ -816,19 +816,19 @@ INSERT INTO pokemon(Number,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_
 INSERT INTO pokemon(Number,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (720,'HoopaHoopa Unbound','Psychic','Dark',680,80,160,60,170,130,80,6,'True');
 INSERT INTO pokemon(Number,Name,Type_1,Type_2,Total,HP,Attack,Defense,Sp_Atk,Sp_Def,Speed,Generation,Legendary) VALUES (721,'Volcanion','Fire','Water',600,80,110,120,130,90,70,6,'True');
 
--- ### What are the average, max, and min speed stats?
+-- What are the average, max, and min speed stats?
 
 SELECT AVG(Speed) FROM pokemon;
 SELECT MIN(Speed) FROM pokemon;
 SELECT MAX(Speed) FROM pokemon;
 
--- ### Figuring out the average of attack points for water type pokemon 
+-- Figuring out the average of attack points for water type pokemon 
 
 SELECT AVG(Attack) AS avg_water_attack FROM pokemon
 GROUP BY type_1
 HAVING type_1 = 'Water';
 
--- ### The max speed for pokemon is 180, with 68.3 being the average. I want to figure out how many pokemon have a speed that is between 60 and 120.
+-- The max speed for pokemon is 180, with 68.3 being the average. I want to figure out how many pokemon have a speed that is between 60 and 120.
 
 SELECT COUNT(*) AS number_of_pokemon,
     CASE
@@ -838,7 +838,7 @@ SELECT COUNT(*) AS number_of_pokemon,
 END AS "average_speed" FROM pokemon
 GROUP BY average_speed;
 
--- ### How many ghost pokemon are NOT first generation?
+-- How many ghost pokemon are NOT first generation?
 
 SELECT COUNT(*) AS new_gen_ghost_pokemon
 FROM pokemon
