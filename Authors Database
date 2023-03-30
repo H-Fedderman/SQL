@@ -1,0 +1,40 @@
+-- Creating a table with my favorite authors
+
+CREATE TABLE authors (id INTEGER PRIMARY KEY, fullname TEXT, birthday TEXT, hometown TEXT);
+
+INSERT INTO authors VALUES 
+(1,"Neil Gaiman", "November 10 1960", "Portchester, Hampshire"),
+(2,"Erin Morgenstern", "July 8 1978", "Marshfield, MA"),
+(3, "Edward Allen Poe", "January 19 1809", "Boston, MA"),
+(4,"Martha Gellhorn", "November 8 1908","London, United Kingdom"),
+(5, "Iris Murdoch", "July 15 1919","Phibsborough Dublin, Ireland"),
+(6, "Amanda Palmer","April 30 1976","New York, NY"),
+(7,"John Bayley","March 27 1925","Lahore, Pakistan"),
+(8,"Ernest Hemingway","July 21 1899","Oak Park, IL"),
+(9,"Allen Ginsberg","June 3 1926","Newark, NJ"),
+(10, "Peter Orlovsky","July 8 1933","New York, NY"),
+(11, "L.M. Montgomery","November 30 1874","New London, Canada"),
+(12,"Mary Shelley", "August 30 1797","Somers Town, London, United Kingdom"),
+(13,"Percy Bysshe Shelley","August 4 1792","Field Place, Warnham, West Sussex, England"),
+(14,"Bram Stoker","November 8 1847","Clontarf, Dublin, Ireland"),
+(15, "Bernadette Banner","March 11 1994","New York, NY");
+
+-- Creating a table matching unique author id's to their spouse's author id
+
+CREATE TABLE spouses (id INTEGER PRIMARY KEY, spouse1_id INTEGER, spouse2_id INTEGER);
+
+INSERT INTO spouses VALUES
+(1, 1, 6),
+(2,4,8),
+(3, 5, 7),
+(4,9,10),
+(5,12,13);
+
+-- I want to find out which authors married another author. 
+--To do this I want to join the tables together and put the married author's names side by side.
+
+SELECT a.fullname AS spouse_1, b.fullname AS spouse_2 FROM spouses
+    LEFT OUTER JOIN authors a
+    ON spouses.spouse1_id=a.id
+    LEFT OUTER JOIN authors b
+    ON spouses.spouse2_id=b.id;
