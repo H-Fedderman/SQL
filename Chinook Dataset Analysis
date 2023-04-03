@@ -1,0 +1,84 @@
+#In this SQL code, I am solving problems using the Chinook dataset 
+
+#1. Show Customers (their full names, customer ID, and country) who are not in the US.
+  SELECT (FirstName ||' ' || LastName) AS full_name, customerid, country
+  FROM chinook.customers
+  WHERE country <> 'USA';
+
+#2. Show only customers from Germany
+  SELECT firstname, lastname, country
+  FROM chinook.customers
+  WHERE country = 'Germany';
+
+#3. Find the Invoices of customers who are from the US. The resulting table should show the customer's full name, Invoice ID, Date of the invoice, and billing country.
+  SELECT (c.firstname||' '||c.lastname) AS full_name, 
+  i.invoiceid, i.invoicedate, i.billingcountry
+  FROM chinook.customers c
+  JOIN chinook.invoices i
+  ON c.customerid = i.customerid
+  WHERE i.billingcountry = 'USA';
+
+#4. Show the Employees who are Sales Agents.
+  SELECT * FROM chinook.employees
+  WHERE title LIKE '%Sales % agent%'
+
+#5. Provide a query that shows the invoices associated with each sales agent. The resulting table should include the Sales Agent's full name.
+  SELECT i.*, (e.firstname||' '||e.lastname) AS sales_agent
+  FROM chinook.invoices i
+  LEFT JOIN chinook.customers c
+  ON i.customerid = c.customerid
+  LEFT JOIN chinook.employees e
+  ON c.supportrepid = e.employeeid
+  WHERE e.title LIKE '%sales % agent%'
+  ORDER BY sales_agent;
+
+#6. Show the total invoice amount paid per customer and include the sales agent name that they worked with.
+  SELECT (c.firstname||' '||c.lastname) AS customer, SUM(i.total) AS total,
+  (e.firstname||' '||e.lastname) AS sales_agent
+  FROM chinook.invoices i
+  LEFT JOIN chinook.customers c
+  ON i.customerid = c.customerid
+  LEFT JOIN chinook.employees e
+  ON c.supportrepid = e.employeeid
+  WHERE e.title LIKE '%sales % agent%'
+  GROUP BY customer
+  ORDER BY customer;
+
+#7. How many invoices were there in 2013?
+  SELECT COUNT(invoiceid) AS total_invoices
+  FROM chinook.invoices
+  WHERE invoicedate LIKE '2013%';
+
+#8. What was the total revenue for 2013?
+  SELECT SUM(total) FROM chinook.invoices
+  WHERE invoicedate LIKE '2013%';
+
+#9. Write a query that includes the purchased track name AND artist name with each invoice ID
+  SELECT i.invoiceid, t.name AS track_name, art.name AS artist
+  FROM chinook.tracks t
+  JOIN chinook.albums alb
+  ON t.albumid = alb.albumid
+  JOIN chinook.artists art
+  ON art.artistid = alb.artistid
+  JOIN chinook.invoice_items i
+  ON t.trackid = i.trackid;
+
+#10. What genre made the most sales. Include the genre and quantity sold.
+  SELECT COUNT(i.quantity) AS quantity_sold, g.name AS genre
+  FROM chinook.genres g
+  JOIN chinook.tracks t
+  ON g.genreid = t.genreid
+  JOIN chinook.invoice_items i
+  ON t.trackid = i.trackid
+  GROUP BY g.name;
+
+#11. Query a list of album names with even ID numbers only. You may print the results in any order, but must exclude duplicates from your answer.
+  SELECT DISTINCT title, albumid
+	FROM chinook.albums 
+	WHERE MOD(albumid,2)=0 
+	ORDER BY albumid ASC; 
+ 
+#12. Find the difference between the total number of track entries in the table and the number of distinct track entries in the table and name it "Difference."
+  SELECT COUNT(name) - COUNT(distinct name) AS Difference
+  FROM chinook.tracks;
+ 
