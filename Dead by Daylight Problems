@@ -1,0 +1,56 @@
+# In this code, I analyze data from the video game Dead by Daylight using two tables, one for survivors and one for killers. 
+# The use_percentage stats were pulled from NightLight and are relevant as of March 2023
+
+
+#1. What are the top 5 perks that are most used in the game?
+  SELECT s.perk_name, CAST(usage_rate as real) AS use_percentage
+  FROM BIT_DB.survivors s
+  WHERE character_type= 'Survivor' AND use_percentage > 18.4
+  UNION
+  SELECT k.perk_name, CAST(usage_rate as real) AS use_percentage
+  FROM BIT_DB.killers k
+  WHERE character_type = 'Killer' AND use_percentage > 14.3
+  ORDER BY use_percentage DESC
+  LIMIT 5;
+
+#2. What character has the most popular perks? In order to get this, I want to get the average of each characters perk usage
+and combine the tables together to see who the top character is.
+
+  SELECT AVG(s.usage_rate) AS popularity, character
+  FROM BIT_DB.survivors s
+  GROUP BY character
+  UNION
+  SELECT AVG(k.usage_rate) AS popularity, character
+  FROM BIT_DB.killers k
+  GROUP BY character
+  ORDER BY popularity DESC
+  LIMIT 1;
+
+#3. Which perks cause the exposure status effect?
+  SELECT s.perk_name AS survivor_perks, k.perk_name AS killer_perks
+  FROM BIT_DB.survivors s
+  FULL OUTER JOIN BIT_DB.killers k
+  ON s.perk_name = k.perk_name
+  WHERE s.status_effect_inflicted OR k.status_effect_inflicted LIKE '%expose%';
+
+
+#4. How many perks are there in the game? Seperate results by survivor and killer.
+  SELECT COUNT(s.perk_name) AS survivor_perks, COUNT(k.perk_name) AS killer_perks
+  FROM BIT_DB.survivors s
+  FULL OUTER JOIN BIT_DB.killers k
+  ON s.perk_name = k.perk_name;
+
+
+#5. Compare the average usage rate for killer perks versus survivor perks.
+  SELECT AVG(s.usage_rate) AS avg_survivor, AVG(k.usage_rate) AS avg_killer
+  FROM BIT_DB.survivors s
+  FULL OUTER JOIN BIT_DB.killers k
+  ON s.perk_name = k.perk_name;
+
+
+#6. What perk(s) cause a boon status effect and help with the action of running?
+  SELECT perk_name, perk_action_type, status_effect_inflicted
+  FROM BIT_DB.survivors
+  WHERE perk_action_type LIKE '%running%' AND status_effect_inflicted LIKE '%boon%';
+
+
